@@ -21,9 +21,9 @@ The material builds progressively from the foundations of typed $\lambda$-calcul
 You need an installation of Agda (version 2.6+ recommended):
 
 ```bash
-agda Test.agda
-agda BasicFun.agda
-agda BasicInd.agda
+agda src/Test.agda
+agda src/BasicFun.agda
+agda src/BasicInd.agda
 ```
 
 ## License
