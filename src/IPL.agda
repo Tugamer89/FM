@@ -19,16 +19,16 @@ module IPL where
   compose g f x = g (f x) -- compose = λ g → λ f → λ x → g (f x)
 
   K : {A B : Set} → A → B → A
-  K = {!   !}
+  K = λ x → λ y → x
 
   S : {A B C : Set} → (A → B → C) → (A → B) → A → C
-  S = {!   !}
+  S = λ f → λ g → λ x → f x (g x)
 
   ∧-assoc : {A B C : Set} → (A ∧ B) ∧ C → A ∧ (B ∧ C)
-  ∧-assoc = {!   !}
+  ∧-assoc = λ x → pr₁ (pr₁ x) , (pr₂ (pr₁ x) , pr₂ x)
 
   ∧-comm : {A B : Set} → A ∧ B → B ∧ A
-  ∧-comm = {!   !}
+  ∧-comm = λ x → pr₂ x , pr₁ x
 
   ⊤-left1 : {A : Set} → ⊤ ∧ A → A
   ⊤-left1 = {!   !}
