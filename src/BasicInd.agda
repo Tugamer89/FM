@@ -141,7 +141,7 @@ module BasicInd where
   -- implement fmap and fold functions for trees 
 
   tfmap-forest : {A B : Set} → (A → B) → List (Tree A) → List (Tree B)
-  tfmap : {A B : Set} → (A → B) → Tree A → Tree B 
+  tfmap        : {A B : Set} → (A → B) → Tree A → Tree B 
   
   tfmap-forest f [] = []
   tfmap-forest f (x ∷ ts) = (tfmap f x) ∷ (tfmap-forest f ts)
@@ -149,13 +149,24 @@ module BasicInd where
   tfmap f (node x c) = node (f x) (tfmap-forest f c)
 
 
-  tfold : {A B : Set} → (A → List B → B) → Tree A → B
-  tfold = {!   !}
+  tfold-forest : {A B : Set} → (A → List B → B) → List (Tree A) → List B
+  tfold        : {A B : Set} → (A → List B → B) → Tree A → B
+  
+  tfold-forest f [] = []
+  tfold-forest f (t ∷ ts) = (tfold f t) ∷ (tfold-forest f ts)
+
+  tfold f (node x c)= f x (tfold-forest f c)
 
   -- implement eta and _>>_ functions for trees   
 
   teta : {A : Set} → A → Tree A
   teta x = node x []
 
-  _t>>_ : {A B : Set} → (A → Tree B) → Tree A → Tree B
-  _t>>_ = {!   !}
+  _t>>-forest_ : {A B : Set} → (A → Tree B) → List (Tree A) → List (Tree B)
+  _t>>_        : {A B : Set} → (A → Tree B) → Tree A → Tree B
+
+  f t>>-forest [] = []
+  f t>>-forest (x ∷ c) = (f t>> x) ∷ (f t>>-forest c)
+  
+  f t>> (node x c) with f x
+  ... | node y ys = node y (ys ++ (f t>>-forest c))
