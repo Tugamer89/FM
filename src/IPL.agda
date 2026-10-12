@@ -118,8 +118,8 @@ module IPL where
 
   -- the following shows that the double negation of the excluded middle is provable in IPL
   -- hint: find a way to get a variable of type A in the context
-  ¬¬-exmid : {A : Set} → ¬ (¬ (A ∨ ¬ A))
-  ¬¬-exmid = {!   !}
+  ¬¬-exmid : {A : Set} → ¬ (¬ (A ∨ ¬ A))  -- ≡ ((A ∨ ¬ A) → ⊥) → ⊥ 
+  ¬¬-exmid = λ f → f (inr (λ a → f (inl a)))
 
   -- reduction ad absurdium
 
@@ -141,7 +141,7 @@ module IPL where
     -- that is, prove the law of excluded middle for all types
     -- hint: use ¬¬-exmid
     em : ExMid
-    em = {!   !}
+    em = dne ¬¬-exmid
 
   module em-to-dne where
     -- postulate the existence of a term of type ExMid
@@ -152,4 +152,4 @@ module IPL where
     -- that is, prove double negation elimination for all types
     -- hint: use case_of_or_ to split cases over em
     dne : ¬¬Elim
-    dne ¬¬a = {!   !}
+    dne ¬¬a = case em of (λ a → a) or (λ na → abort (¬¬a na))
