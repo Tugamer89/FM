@@ -31,67 +31,90 @@ module IPL where
   ∧-comm = λ x → pr₂ x , pr₁ x
 
   ⊤-left1 : {A : Set} → ⊤ ∧ A → A
-  ⊤-left1 = {!   !}
+  ⊤-left1 = λ x → pr₂ x
 
   ⊤-left2 : { A : Set} → A → ⊤ ∧ A
-  ⊤-left2 = {!   !}
+  ⊤-left2 = λ x → tt , x
 
   copy : {A : Set} → A → A ∧ A
-  copy = {!   !}
+  copy = λ x → x , x
 
   discard : {A : Set} → A → ⊤
-  discard = {!   !}
+  discard = λ x → tt
 
   -- write similar properties for ∨ and ⊥
 
+  ∨-assoc : {A B C : Set} → (A ∨ B) ∨ C → A ∨ (B ∨ C)
+  ∨-assoc = λ x → case x of (λ y → case y of (λ a → inl a) or (λ b → inr (inl b))) or (λ c → inr (inr c))
+
+  ∨-comm : {A B C : Set} → A ∨ B → B ∨ A
+  ∨-comm = λ x → case x of (λ a → inr a) or (λ b → inl b)
+
+  ⊥-left1 : {A : Set} → ⊥ ∨ A → A
+  ⊥-left1 = λ x → case x of (λ b → abort b) or (λ a → a)
+
+  ⊥-left2 : {A : Set} → A → ⊥ ∨ A
+  ⊥-left2 = λ a → inr a
+
+  absurd : {A : Set} → ⊥ → A
+  absurd = λ b → abort b
+
+
   ∧∨-dist : {A B C : Set} → A ∧ (B ∨ C) → (A ∧ B) ∨ (A ∧ C)
-  ∧∨-dist = {!   !}
+  ∧∨-dist = λ x → case pr₂ x of (λ b → inl (pr₁ x , b)) or (λ c → inr (pr₁ x , c))
 
   ∨∧-dist : {A B C : Set} → A ∨ (B ∧ C) → (A ∨ B) ∧ (A ∨ C)
-  ∨∧-dist = {!   !}
+  ∨∧-dist = λ x → case x of (λ a → inl a , inl a) or (λ bc → inr (pr₁ bc) , inr (pr₂ bc))
 
   -- do the reverse statements hold?
 
+  ∧∨-dist-rev : {A B C : Set} → (A ∧ B) ∨ (A ∧ C) → A ∧ (B ∨ C)
+  ∧∨-dist-rev = λ x → case x of (λ ab → pr₁ ab , inl (pr₂ ab)) or (λ ac → pr₁ ac , inr (pr₂ ac))
+
+  ∨∧-dist-rev : {A B C : Set} → (A ∨ B) ∧ (A ∨ C) → A ∨ (B ∧ C)
+  ∨∧-dist-rev = λ x → case pr₁ x of (λ a → inl a) or (λ b → case pr₂ x of (λ a → inl a) or (λ c → inr (b , c)))
+
+
   curry : {A B C : Set} → (A → B → C) → A ∧ B → C
-  curry = {!   !}
+  curry = λ f → λ ab → f (pr₁ ab) (pr₂ ab)
 
   uncurry : {A B C : Set} → (A ∧ B → C) → A → B → C
-  uncurry = {!   !}
+  uncurry = λ f → λ a → λ b → f (a , b)
 
   ∨→-dist : {A B C : Set} → (A ∨ B → C) → (A → C) ∧ (B → C)
-  ∨→-dist = {!   !}
+  ∨→-dist = λ f → (λ a → f (inl a)) , (λ b → f (inr b))
 
   →∧-dist : {A B C : Set} → (A → B ∧ C) → (A → B) ∧ (A → C)
-  →∧-dist = {!   !}
+  →∧-dist = λ f → (λ a → pr₁ (f a)) , (λ a → pr₂ (f a))
 
   ∧→-dist : {A B C : Set} → (A → B) ∧ (A → C) → A → B ∧ C
-  ∧→-dist = {!   !}
+  ∧→-dist = λ x → λ a → pr₁ x a , pr₂ x a
 
   -- Negation
 
   contr1 : {A : Set} → A ∧ (¬ A) → ⊥
-  contr1 = {!   !}
+  contr1 = λ x → (pr₂ x) (pr₁ x)
 
   contr2 : {A : Set} → A → ¬ A → ⊥
-  contr2 = {!   !}
+  contr2 = λ a → λ na → na a
 
-  ¬¬-intro : {A : Set} → A → ¬ (¬ A)
-  ¬¬-intro = {!   !}
+  ¬¬-intro : {A : Set} → A → ¬ (¬ A)  -- ¬ (¬ A) ≡ (A → ⊥) → ⊥
+  ¬¬-intro = λ a → λ na → na a
 
   →-equiv : {A B : Set} → ((¬ A) ∨ B) → A → B
-  →-equiv = {!   !}
+  →-equiv = λ x → λ a → case x of (λ na → abort (na a)) or (λ b → b)
 
-  de-morgan1 : {A B : Set} → (¬ A) ∧ (¬ B) → ¬ (A ∨ B)
-  de-morgan1 = {!   !}
+  de-morgan1 : {A B : Set} → (¬ A) ∧ (¬ B) → ¬ (A ∨ B)  -- ≡ ((A → ⊥) ∧ (B → ⊥)) → (A ∨ B) → ⊥
+  de-morgan1 = λ x → λ y → case y of (λ a → pr₁ x a) or (λ b → pr₂ x b)
 
-  de-morgan2 : {A B : Set} → (¬ A) ∨ (¬ B) → ¬ (A ∧ B)
-  de-morgan2 = {!   !}
+  de-morgan2 : {A B : Set} → (¬ A) ∨ (¬ B) → ¬ (A ∧ B)  -- ≡ ((A → ⊥) ∨ (B → ⊥)) → (A ∧ B) → ⊥
+  de-morgan2 = λ x → λ y → case x of (λ fa → fa (pr₁ y)) or (λ fb → fb (pr₂ y))
 
-  de-morgan3 : {A B : Set} → (A ∧ ¬ B) → ¬ (A → B)
-  de-morgan3 = {!   !}
+  de-morgan3 : {A B : Set} → (A ∧ ¬ B) → ¬ (A → B)  -- ≡ (A ∧ (B → ⊥)) → (A → B) → ⊥
+  de-morgan3 = λ x → λ f → pr₂ x (f (pr₁ x))
 
-  ¬-rev-→ : {A B : Set} → (A → B) → ¬ B → ¬ A
-  ¬-rev-→ = {!   !}
+  ¬-rev-→ : {A B : Set} → (A → B) → ¬ B → ¬ A  -- ≡ (A → B) → (B → ⊥) → (A → ⊥)
+  ¬-rev-→ = λ f → λ nb → λ a → nb (f a)
 
   -- the following shows that the double negation of the excluded middle is provable in IPL
   -- hint: find a way to get a variable of type A in the context
