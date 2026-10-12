@@ -15,6 +15,12 @@ The material builds progressively from the foundations of typed $\lambda$-calcul
   - Arithmetic and comparison functions (`+`, `*`, `_?≤_`, `even?`).
   - List processing algorithms (insertion sort `isort`, `fmap`, `fold`, monadic operations).
   - Multi-way tree traversals (`tfmap`).
+- **`SimpleTypes.agda`**: Formalization of simple types:
+  - Basic syntax and typing rules.
+  - Associated properties.
+- **`IPL.agda`**: Intuitionistic Propositional Logic (IPL):
+  - Definitions of logical connectives.
+  - Inference rules of the deductive system.
 
 ## Requirements & Usage
 
@@ -24,6 +30,8 @@ You need an installation of Agda (version 2.6+ recommended):
 agda src/Test.agda
 agda src/BasicFun.agda
 agda src/BasicInd.agda
+agda src/SimpleTypes.agda
+agda src/IPL.agda
 ```
 
 ## License
