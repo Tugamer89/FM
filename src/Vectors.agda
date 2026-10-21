@@ -1,7 +1,7 @@
 
 
 module Vectors where 
-  open import BasicInd renaming ( [] to []ₗ ; _∷_ to _∷ₗ_ )   
+  open import BasicInd renaming ( [] to []ₗ ; _∷_ to _∷ₗ_ ; _++_ to _++ₗ_ )   
 
   data Vec (A : Set) : Nat → Set where 
     [] : Vec A zero 
