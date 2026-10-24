@@ -68,3 +68,12 @@ module DependentTypes where
   ∨-elim dl dr (inr b) = dr b
 
 
+----------
+-- Π-type
+----------
+
+  -- a shortcut to simplify the notation 
+  Π : (A : Set) → (A → Set) → Set _ 
+  Π A B = (x : A) → B x  
+ 
+
