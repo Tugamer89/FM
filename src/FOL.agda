@@ -35,37 +35,39 @@ module FOL where
 
   appl-witn : (S : Set) (P : Pred S)
                  → S → ∀' S P → ∃ S P
-  appl-witn S P = {!!}
+  appl-witn S P = λ witn → λ f → witn ,, f witn  -- ???
 
   ∃∧2∧∃ : (S : Set) → (P Q : Pred S)
             → ∃ S (P ∧' Q)
             → ∃ S P ∧ ∃ S Q
-  ∃∧2∧∃ S P Q = {!!}
+  ∃∧2∧∃ S P Q = λ e → (fst e ,, pr₁ (snd e)) , (fst e ,, pr₂ (snd e))
 
   ∃∨2∨∃ : (S : Set)(P Q : Pred S)
             → ∃ S (P ∨' Q)
             → ∃ S P ∨ ∃ S Q
-  ∃∨2∨∃ S P Q = {!!}
+  ∃∨2∨∃ S P Q = λ e → case (snd e) of (λ p → inl (fst e ,, p)) or (λ q → inr (fst e ,, q))
 
   ∨∃2∃∨ : (S : Set) (P Q : Pred S)
             → ∃ S P ∨ ∃ S Q
             → ∃ S (P ∨' Q)
-  ∨∃2∃∨ S P Q = {!!}
+  ∨∃2∃∨ S P Q = λ d → case d of
+                      (λ e → (fst e ,, inl (snd e))) or
+                      (λ e → (fst e ,, inr (snd e)))
 
   ∀∧2∧∀ : (S : Set) → (P Q : Pred S)
             → ∀' S (P ∧' Q)
             → ∀' S P ∧ ∀' S Q
-  ∀∧2∧∀ S P Q = {!!}
+  ∀∧2∧∀ S P Q = λ f → (λ s → pr₁ (f s)) , (λ s → pr₂ (f s))
 
   ∧∀2∀∧ : (S : Set) → (P Q : Pred S)
             → ∀' S P ∧ ∀' S Q
             → ∀' S (P ∧' Q)
-  ∧∀2∀∧ S P Q = {!!}
+  ∧∀2∀∧ S P Q = λ p → λ s → (pr₁ p s) , (pr₂ p s)
 
   ∨∀2∀∨ : (S : Set) (P Q : Pred S)
              → ∀' S P ∨ ∀' S Q
                → ∀' S (P ∨' Q)
-  ∨∀2∀∨ S P Q = {!!}
+  ∨∀2∀∨ S P Q = λ d → λ s → case d of (λ f → inl (f s)) or (λ f → inr (f s))
 
 -- One of the following four facts requires ¬¬Elim (or ExMid) as an additional assumption.
 -- Find it, add the assumption, and prove it.
@@ -73,22 +75,22 @@ module FOL where
   ∀¬2¬∃ : (S : Set) (P : Pred S)
              → ∀' S (¬' P)
                → ¬ (∃ S P)
-  ∀¬2¬∃ S P = {!!}
+  ∀¬2¬∃ S P = {!  !}
 
   ¬∃2∀¬ : (S : Set) (P : Pred S)
              → ¬ (∃ S P)
                → ∀' S (¬' P)
-  ¬∃2∀¬ S P = {!!}
+  ¬∃2∀¬ S P = {!  !}
 
   ¬∀2∃¬ : (S : Set) (P : Pred S)
              → ¬ (∀' S P)
                → ∃ S (¬' P)
-  ¬∀2∃¬ S P = {!!}
+  ¬∀2∃¬ S P = {!  !}
 
   ∃¬2¬∀ : (S : Set) (P : Pred S)
              → ∃ S (¬' P)
                → ¬ (∀' S P)
-  ∃¬2¬∀ S P = {!!}
+  ∃¬2¬∀ S P = {!  !}
 
 -- Binary relations 
   Rel : Set → Set → Set₁ 
