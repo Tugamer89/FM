@@ -75,22 +75,24 @@ module FOL where
   ∀¬2¬∃ : (S : Set) (P : Pred S)
              → ∀' S (¬' P)
                → ¬ (∃ S P)
-  ∀¬2¬∃ S P = {!  !}
+  ∀¬2¬∃ S P = λ f → λ e → f (fst e) (snd e)
 
   ¬∃2∀¬ : (S : Set) (P : Pred S)
              → ¬ (∃ S P)
                → ∀' S (¬' P)
-  ¬∃2∀¬ S P = {!  !}
+  ¬∃2∀¬ S P = λ ne → λ s → λ p → ne (s ,, p)
+
+  postulate dne : ¬¬Elim
 
   ¬∀2∃¬ : (S : Set) (P : Pred S)
              → ¬ (∀' S P)
                → ∃ S (¬' P)
-  ¬∀2∃¬ S P = {!  !}
+  ¬∀2∃¬ S P = λ nA → dne (λ nE → nA (λ s → dne (λ nP → nE (s ,, nP))))
 
   ∃¬2¬∀ : (S : Set) (P : Pred S)
              → ∃ S (¬' P)
                → ¬ (∀' S P)
-  ∃¬2¬∀ S P = {!  !}
+  ∃¬2¬∀ S P = λ e → λ f → (snd e) (f (fst e))
 
 -- Binary relations 
   Rel : Set → Set → Set₁ 
