@@ -101,5 +101,5 @@ module FOL where
 -- the type-theoretic axiom of choice
   ttAC : (T S : Set) (R : Rel T S)
             → ∀' T (λ t → ∃ S (R t)) → ∃ (T → S) (λ f → ∀' T (λ t →  R t (f t)))
-  ttAC T S P prem = {!   !} 
+  ttAC T S P prem = (λ t → fst (prem t)) ,, λ t → snd (prem t) 
 
